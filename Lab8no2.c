@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-int checkscore(char std[]);
+int hardestQuestion(char ans[][10], int n);
 
 char keys[10] = {'D','B','D','C','C','D','A','E','A','D'};
 
 int main() {
-    int i;
+
     char ans[8][10] = {
         {'A','B','A','C','C','D','E','E','A','D'},
         {'D','B','A','B','C','A','E','E','A','D'},
@@ -17,21 +17,33 @@ int main() {
         {'E','B','E','C','C','D','E','E','A','D'}
     };
 
-    for(i = 0; i < 8; i++) {
-        printf("std %d => %d\n", i+1, checkscore(ans[i]));
-    }
+    printf("Hardest question = No.%d\n",
+           hardestQuestion(ans, 8) + 1);
 
     return 0;
 }
 
-int checkscore(char std[]) {
-    int i, score = 0;
+int hardestQuestion(char ans[][10], int n) {
 
-    for(i = 0; i < 10; i++) {
-        if(std[i] == keys[i]) {
-            score++;
+    int correct[10] = {0};
+    int i, j;
+
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < 10; j++) {
+            if(ans[i][j] == keys[j])
+                correct[j]++;
         }
     }
 
-    return score;
+    int min = correct[0];
+    int idx = 0;
+
+    for(i = 1; i < 10; i++) {
+        if(correct[i] < min) {
+            min = correct[i];
+            idx = i;
+        }
+    }
+
+    return idx;
 }
